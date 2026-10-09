@@ -16,48 +16,30 @@
 #     if i % 3 == 0:
 #         kratni.append(i)
 # print("Додатні: ",plus)
-# print("Віж'ємні: ",minus)
+# print("Від'ємні: ",minus)
 # print("Парні: ",parni)
-# print("Картні 3: ",kratni)
-# print("Min: " + str(min(digits)) + ";", "Max: " + str(max(digits))+ ";","Sum:" + str(sum(digits)) + ";", "Averange: " + str(round((sum(digits)/len(digits)), 2)) + ";")
+# print("Кратні 3: ",kratni)
+# print("Min: " + str(min(digits)) + ";", "Max: " + str(max(digits))+ ";","Sum: " + str(sum(digits)) + ";", "Average: " + str(round((sum(digits)/len(digits)), 2)))
 
 #task 2
-# group1 = set
-# group2 = set
 # group1 = {'Anna','Ivan','Olha'}
 # group2 = {'Ivan','Maksym','Olha'}
 #
-# all = ""
-# spilni = ""
-#
-# for x in group1 | group2:
-#     all = all + " "+ x
-#
-# for y in group1 & group2:
-#     spilni = spilni + " "+ y
-#
-# onlyingp1 = group1 - group2
-# onlyingp2 = group2 - group1
-#
-# for x in onlyingp1:
-#     onlyingp1 = x
-# for x in onlyingp2:
-#     onlyingp2 = x
-#
-# print("Спільні: " + spilni)
-# print("Тільки group1: ", onlyingp1)
-# print("Тільки group2: ", onlyingp2)
-# print("Усі: " + all)
+# print("Спільні: " + ", ".join(sorted(group1 & group2)))
+# print("Тільки group1: " + ", ".join(sorted(group1 - group2)))
+# print("Тільки group2: " + ", ".join(sorted(group2 - group1)))
+# print("Усі: " + ", ".join(sorted(group1 | group2)))
 
 #task 3
 # catalog = {"milk": 48, "tea": 75, "bread": 30, "coffee": 150}
 #
 #
 # def add_or_update(name, price):
-#     if catalog.get(name) is None:
-#         print(f"Товар {name} додано")
+#     old_price = catalog.get(name)
+#     if old_price is None:
+#         print("Товар " + name + " додано")
 #     else:
-#         print(f"Ціну товару {name} змінено: {catalog[name]} -> {price} грн")
+#         print("Ціну товару " + name + " змінено: " + str(old_price) + " -> " + str(price) + " грн")
 #     catalog[name] = price
 #
 #
@@ -66,53 +48,60 @@
 #     if price is None:
 #         print("Товар не знайдено")
 #     else:
-#         print(f"{name} — {price} грн")
+#         print(name + " - " + str(price) + " грн")
 #
 #
 # def show_in_range(low, high):
-#     found = False
+#     kilkist = 0
 #     for name, price in catalog.items():
-#         if low <= price <= high:
-#             print(f"{name} — {price} грн")
-#             found = True
-#     if not found:
+#         if price >= low and price <= high:
+#             print(name + " - " + str(price) + " грн")
+#             kilkist = kilkist + 1
+#     if kilkist == 0:
 #         print("У цьому діапазоні товарів немає")
 #
 #
 # def read_number(text):
 #     while True:
-#         try:
-#             value = float(input(text))
-#             if value < 0:
-#                 print("Ціна не може бути від'ємною")
-#                 continue
-#             return int(value) if value.is_integer() else value
-#         except ValueError:
+#         a = input(text).strip()
+#         if a.replace(".", "", 1).isdigit():
+#             if a.count(".") == 0:
+#                 return int(a)
+#             else:
+#                 return float(a)
+#         elif a.startswith("-") and a[1:].replace(".", "", 1).isdigit():
+#             print("Ціна не може бути від'ємною")
+#         else:
 #             print("Введіть число")
 #
 #
 # while True:
-#     print("\n1 - Додати/змінити товар")
+#     print()
+#     print("1 - Додати/змінити товар")
 #     print("2 - Знайти товар за назвою")
 #     print("3 - Товари в ціновому діапазоні")
 #     print("0 - Вихід")
 #     choice = input("Ваш вибір: ").strip()
 #
-#     if choice == "1":
+#     if(choice == "1"):
 #         name = input("Назва товару: ").strip()
-#         if not name:
+#         if name == "":
 #             print("Назва не може бути порожньою")
-#             continue
-#         add_or_update(name, read_number("Ціна: "))
-#     elif choice == "2":
-#         find_product(input("Назва товару: ").strip())
-#     elif choice == "3":
+#         else:
+#             price = read_number("Ціна: ")
+#             add_or_update(name, price)
+#     elif(choice == "2"):
+#         name = input("Назва товару: ").strip()
+#         find_product(name)
+#     elif(choice == "3"):
 #         low = read_number("Мінімальна ціна: ")
 #         high = read_number("Максимальна ціна: ")
 #         if low > high:
-#             low, high = high, low
+#             temp = low
+#             low = high
+#             high = temp
 #         show_in_range(low, high)
-#     elif choice == "0":
+#     elif(choice == "0"):
 #         break
 #     else:
 #         print("Невірний вибір")
@@ -124,63 +113,95 @@ journal = {}
 
 def read_grades():
     while True:
-        parts = input("Введіть 5 оцінок через пробіл: ").split()
-        try:
-            grades = [int(p) for p in parts]
-        except ValueError:
+        a = input("Введіть 5 оцінок через пробіл: ")
+        chastyny = a.split()
+        grades = []
+        pomylka = False
+        for p in chastyny:
+            if p.isdigit():
+                grades.append(int(p))
+            elif p[0] == "-" and p[1:].isdigit():
+                grades.append(int(p))
+            else:
+                pomylka = True
+
+        if pomylka == True:
             print("Оцінки мають бути цілими числами")
-            continue
-        if len(grades) != 5:
+        elif len(grades) != 5:
             print("Має бути рівно 5 оцінок")
-        elif not all(1 <= g <= 12 for g in grades):
-            print("Оцінки мають бути в діапазоні 1–12")
         else:
-            return grades
+            dobre = True
+            for g in grades:
+                if g < 1 or g > 12:
+                    dobre = False
+            if dobre == True:
+                return grades
+            else:
+                print("Оцінки мають бути в діапазоні 1–12")
 
 
 def average(grades):
-    return sum(grades) / len(grades)
+    suma = 0
+    for g in grades:
+        suma = suma + g
+    return suma / len(grades)
 
 
 def add_student():
     name = input("ПІБ учня: ").strip()
-    if not name:
+    if name == "":
         print("ПІБ не може бути порожнім")
-        return
-    if name in journal:
-        print("Такий учень уже є, оцінки буде замінено")
-    journal[name] = read_grades()
+    else:
+        if name in journal:
+            print("Такий учень уже є, оцінки буде замінено")
+        journal[name] = read_grades()
 
 
 def show_journal():
-    print(f"{group_info[0]} — {group_info[1]}")
-    if not journal:
-        print("Журнал порожній")
-        return
-    for name, grades in journal.items():
-        print(f"{name}: {' '.join(map(str, grades))}")
+    print(group_info[0] + " - " + group_info[1])
+    for name in journal:
+        ocinky = ""
+        for g in journal[name]:
+            ocinky = ocinky + str(g) + " "
+        print(name + ": " + ocinky)
 
 
 def show_averages():
-    for name, grades in journal.items():
-        print(f"{name} — {average(grades):.1f}")
+    for name in journal:
+        print(name + " - " + str(round(average(journal[name]), 1)))
 
 
 def show_rating():
-    ranking = sorted(journal.items(), key=lambda item: average(item[1]), reverse=True)
-    for place, (name, grades) in enumerate(ranking, start=1):
-        print(f"{place}. {name} — {average(grades):.1f}")
+    imena = []
+    for name in journal:
+        imena.append(name)
+
+    for i in range(len(imena)):
+        for j in range(len(imena) - 1):
+            if average(journal[imena[j]]) < average(journal[imena[j + 1]]):
+                temp = imena[j]
+                imena[j] = imena[j + 1]
+                imena[j + 1] = temp
+
+    mistse = 1
+    for name in imena:
+        print(str(mistse) + ". " + name + " - " + str(round(average(journal[name]), 1)))
+        mistse = mistse + 1
 
 
 def show_best():
-    best_avg = max(average(g) for g in journal.values())
-    for name, grades in journal.items():
-        if average(grades) == best_avg:
-            print(f"{name} — {best_avg:.1f}")
+    best = 0
+    for name in journal:
+        if average(journal[name]) > best:
+            best = average(journal[name])
+    for name in journal:
+        if average(journal[name]) == best:
+            print("Найкращий результат: " + name + " - " + str(round(best, 1)))
 
 
 while True:
-    print("\n1 - Додати учня")
+    print()
+    print("1 - Додати учня")
     print("2 - Показати журнал")
     print("3 - Середній бал кожного учня")
     print("4 - Рейтинг учнів")
@@ -188,21 +209,30 @@ while True:
     print("0 - Вихід")
     choice = input("Ваш вибір: ").strip()
 
-    if choice == "1":
+    if(choice == "1"):
         add_student()
-    elif choice in ("2", "3", "4", "5"):
-        if not journal:
+    elif(choice == "2"):
+        if len(journal) == 0:
             print("Журнал порожній")
-        elif choice == "2":
-            show_journal()
-        elif choice == "3":
-            show_averages()
-        elif choice == "4":
-            show_rating()
         else:
-            print(f"{group_info[0]} — {group_info[1]}")
+            show_journal()
+    elif(choice == "3"):
+        if len(journal) == 0:
+            print("Журнал порожній")
+        else:
+            show_averages()
+    elif(choice == "4"):
+        if len(journal) == 0:
+            print("Журнал порожній")
+        else:
+            show_rating()
+    elif(choice == "5"):
+        if len(journal) == 0:
+            print("Журнал порожній")
+        else:
+            print(group_info[0] + " - " + group_info[1])
             show_best()
-    elif choice == "0":
+    elif(choice == "0"):
         break
     else:
         print("Невірний вибір")

@@ -10,7 +10,8 @@
 #     elif m % 5 == 0:
 #         s = s + m
 #         k = k + 1
-# j = s / k
+# if(k != 0):
+#     j = s / k
 # print("Кількість: ", k)
 # print("Сума: ", s)
 # print("Середнє: ", round(j, 2))
@@ -19,23 +20,21 @@
 # height = int(input("height="))
 # contur = input("контур=")
 # inbox = input("всередині=")
-# if(height > 3 and width > 3):
+# if(height >= 3 and width >= 3):
 #     for i in range(height):
-#         print("")
 #         for j in range(width):
 #             if(j == 0 or i == 0 or j == width-1 or i == height-1):
 #                 print(contur, end="")
-#             elif(j == width):
-#                 print(contur, end="")
 #             else:
 #                 print(inbox, end="")
+#         print("")
 # else:
-#     print("width та height мають бути більше 3")
+#     print("width та height мають бути не менше 3")
 #task 3
 # n = int(input("Введіть N: "))
 #
 # res = []
-# for i in range(1, n):
+# for i in range(1, n+1):
 #     x = i
 #     ok = True
 #     while x > 0:
@@ -46,8 +45,8 @@
 #         x //= 10
 #     if ok:
 #         res.append(i)
-#таск 2
 # print(*res)
+#таск 2
 # n = int(input("Введіть N: "))
 #
 # if n == 0:

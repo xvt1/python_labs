@@ -13,11 +13,11 @@
 #         digits += 1
 #     if(char == " "):
 #         space += 1
-#     if(char in vowels):
+#     if(char.lower() in vowels):
 #         vowels_in_inp += 1
 # print("Літер: ", chars)
 # print("Цифр: ", digits)
-# print("Пробілів ", space)
+# print("Пробілів: ", space)
 # print("Голосних: ", vowels_in_inp)
 # print("Слів: ",len(inp.split()))
 
@@ -25,22 +25,22 @@
 # inp = input("Напишіть ПІБ: ").strip().title()
 #
 # words = inp.split()
-# print(words)
 # if (len(words) == 3):
 #     print(words[0],words[1][0] +"."+ words[2][0]+".")
+# else:
+#     print("ПІБ має складатися з трьох слів")
 
 #task 3
 # word1 = input("Ведіть слово 1: ").strip().lower().replace(" ", "")
 # word2 = input("Ведіть слово 2: ").strip().lower().replace(" ", "")
 #
-# chars = 0
+# print("Слово 1: " + word1)
+# print("Слово 2: " + word2)
 #
-# for char in word1:
-#     if char in word2:
-#         chars +=1
-#
-# if chars == len(word1):
+# if sorted(word1) == sorted(word2):
 #     print("Рядки є анаграмами.")
+# else:
+#     print("Рядки не є анаграмами.")
 #task 4
 
 # inp = input("Ведіть рядок ")
