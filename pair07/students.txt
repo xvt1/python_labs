@@ -1,4 +1,5 @@
 Ivanenko Anna;91
 Leshechenko Ivan;76
 Komarova Sophie; 97
-Bondarenko Illya;84
+Bondarenko Illya;76
+Komarova Olha;97
