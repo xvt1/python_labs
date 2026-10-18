@@ -64,23 +64,48 @@ def avarage(grades):
         return sum(grades) / len(grades)
     return 0
 
-names = set()
-scores = []
-with open("grades.csv", 'r',encoding="utf-8") as f:
-    for line in f:
-        names.add(line.split(';')[0])
-    print(names)
-with open("grades.csv", 'r',encoding="utf-8") as f:
-    lines = f.readlines()
-    clear_lines = ""
-    for line in lines:
-        clear_line = line.strip()
-        clear_lines += clear_line + "-"
-    print(clear_lines)
-    for n in names:
-        s = []
-        if n in clear_lines:
-            parts = clear_line.split(';')
-            print(parts)
-            s.append(parts[2])
-        print(n,s)
+students = set()
+studentsgrades = dict()
+result = dict()
+maxresultstudents = []
+with open("grades.csv","r",encoding="utf-8") as f:
+    g = f.readlines()
+    for i in g:
+        parts = i.split(";")
+        students.add(parts[0])
+    for i in students:
+        for j in g:
+            parts = j.split(";")
+            if i == parts[0]:
+                if i in studentsgrades:
+                    studentsgrades[i].append(int(parts[2].strip()))
+                else:
+                    studentsgrades[i] = [int(parts[2].strip())]
+
+sortedresult = sorted(studentsgrades.items(), key=lambda x:avarage(x[1]), reverse=True)
+with open("report.txt","w",encoding="utf-8") as f:
+    for i,value in sortedresult:
+        print(f'{i} — Оцінок: {len(list(value))} — середній: {avarage(list(value))}')
+        f.write(f'{i} — Оцінок: {len(list(value))} — середній: {avarage(list(value))}\n')
+        result[i] = avarage(list(value))
+
+maxresults = max(result.values())
+for i in result:
+    if result[i] == maxresults:
+        maxresultstudents.append(i)
+
+with open("report.txt","a",encoding="utf-8") as f:
+    print("Найкращий результат: ", end="")
+    f.write("Найкращий результат: ")
+
+    lenght = len(maxresultstudents)
+    if len(maxresultstudents) > 1:
+        print(", ".join(maxresultstudents[:-1]) + " та " + maxresultstudents[-1], end="")
+        f.write(", ".join(maxresultstudents[:-1]) + " та " + maxresultstudents[-1])
+    elif len(maxresultstudents) == 1:
+        print(maxresultstudents[0], end="")
+        f.write(maxresultstudents[0])
+
+    print(f' — {maxresults}',end="")
+    f.write(f' — {maxresults}'  + "\n")
+

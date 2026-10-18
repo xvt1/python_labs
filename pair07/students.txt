@@ -1,5 +1,4 @@
-Ivanenko Anna;91
-Leshechenko Ivan;76
-Komarova Sophie; 97
-Bondarenko Illya;76
-Komarova Olha;97
+Anna;Python;11
+Anna;Math;10
+Ivan;Python;9
+Ivan;Math;12
