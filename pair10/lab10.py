@@ -95,6 +95,7 @@
 
 #task 4
 import os
+
 class Person:
     def __init__(self, name):
         self.name = name
@@ -108,9 +109,12 @@ class Student(Person):
         self.grades = []
 
     def add_grade(self, grade):
-        if grade >= 1 or grade <= 12:
+        if 1 <= grade <= 12:
             self.grades.append(grade)
+
     def average(self):
+        if not self.grades:
+            return 0.0
         return sum(self.grades) / len(self.grades)
 
     def info(self):
@@ -135,9 +139,9 @@ class Course:
         if student not in self.students:
             self.students.append(student)
 
-
-    def remove_student(self, student):
-        if student in self.students:
+    def remove_student(self, name):
+        student = self.finde_student(name)
+        if student:
             self.students.remove(student)
 
     def finde_student(self, name):
@@ -154,8 +158,9 @@ class Course:
     def show_rating(self):
         studentsAverage = []
         for student in self.students:
-            studentsAverage.append(student.average())
-        return studentsAverage.sort()
+            studentsAverage.append([student.name, student.average()])
+        studentsAverage.sort(key=lambda x: x[1], reverse=True)
+        return studentsAverage
 
     def save_date(self):
         with open('course_data.txt', 'w', encoding='utf-8') as f:
@@ -186,11 +191,54 @@ class Course:
         for i in range(len(self.students)):
             print(f'{i+1}.{self.students[i].info()}')
 
+def help():
+    print("1 — показати курс; \n"
+            "2 — додати студента;\n"
+            "3 — видалити студента;\n"
+            "4 — знайти студента;\n"
+            "5 — виставити оцінку;\n"
+            "6 — показати рейтинг;\n"
+            "7 — зберегти дані;\n"
+            "0 — вихід\n")
+
 def main():
-    c = Course("Python", "Ivan Komarov")
+    teacher = Teacher("Ivan Komarov", "Python")
+    c = Course("Python", teacher)
+    while True:
+        inp = int(input("Ведіть функцію: "))
+        if inp == 1:
+            print(c.info())
+        elif inp == 2:
+            addstudent = input("Ведіть ім'я, групу учня. (Приклад: Anna Ivanenko;IT-10)")
+            parts = addstudent.split(";")
+            name = parts[0]
+            group = parts[1]
+            c.add_student(Student(name, group))
+            print(f'Учня:{name} успішно додано в групу {group}')
+        elif inp == 3:
+            remstudent = input(f"Ведіть ім'я учня, якого хочете видалити: ")
+            c.remove_student(remstudent)
+        elif inp == 4:
+            findstudent = input(f"Ведіть ім'я учня, щоб знайти учня в курсі")
+            print(c.finde_student(findstudent))
+        elif inp == 5:
+            addgradestudent = input(f"Ведіть ім'я учня якому хочете виставити оцінку, та введіть оцінку. (Приклад: Anna Ivanenko;10))")
+            parts = addgradestudent.split(";")
+            name = parts[0]
+            grade = int(parts[1])
+            c.add_grade_to_student(name, int(grade))
+        elif inp == 6:
+            list = c.show_rating()
+            if list != None:
+                for i in list:
+                    print(f'{i[0]}—{i[1]}')
+        elif inp == 7:
+            c.save_date()
+        elif inp == 0:
+            break
+        else:
+            help()
 
 
 if __name__ == '__main__':
     main()
-
-#4 пункт не дороблено.... я його планую в суботу робити...
